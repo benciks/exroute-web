@@ -21,6 +21,8 @@ cp .env.example .env   # set VITE_API_URL if the API runs elsewhere
 npm run dev
 ```
 
+Registration is hidden by default. Set `VITE_ENABLE_REGISTRATION=true` before building or running the development server to show the account-creation flow.
+
 Then open http://localhost:5173.
 
 ## Scripts

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { login, register } from "./api.js";
 import { LogoMark } from "./icons.jsx";
 
+const registrationEnabled = import.meta.env.VITE_ENABLE_REGISTRATION === "true";
+
 export default function Login({ onLogin }) {
   const [isRegistering, setIsRegistering] = useState(false);
   const [email, setEmail] = useState("");
@@ -14,7 +16,7 @@ export default function Login({ onLogin }) {
     setSubmitting(true);
     setError(null);
     try {
-      if (isRegistering) await register(email, password);
+      if (registrationEnabled && isRegistering) await register(email, password);
       onLogin(await login(email, password));
     } catch (e) {
       setError(e.message);
@@ -78,12 +80,14 @@ export default function Login({ onLogin }) {
         <button type="submit" className="primary" disabled={submitting}>
           {submitting ? "One moment…" : isRegistering ? "Create account" : "Log in"}
         </button>
-        <p className="switch">
-          {isRegistering ? "Already have an account? " : "New to exroute? "}
-          <button type="button" className="link" onClick={() => setIsRegistering(!isRegistering)}>
-            {isRegistering ? "Log in" : "Create an account"}
-          </button>
-        </p>
+        {registrationEnabled && (
+          <p className="switch">
+            {isRegistering ? "Already have an account? " : "New to exroute? "}
+            <button type="button" className="link" onClick={() => setIsRegistering(!isRegistering)}>
+              {isRegistering ? "Log in" : "Create an account"}
+            </button>
+          </p>
+        )}
       </form>
     </main>
   );
